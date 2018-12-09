@@ -1,4 +1,4 @@
-# sample_app
+# vuemorize
 
 > A Vue.js project
 
