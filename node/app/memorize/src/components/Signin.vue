@@ -1,8 +1,9 @@
 <template>
-  <div>TEST</div>
+  <div>Signin</div>
 </template>
 
 <script>
+export default {};
 </script>
 
 <style>
