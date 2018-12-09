@@ -25,12 +25,12 @@ export default {
     signUp: function() {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.username, this.password)
+        .createUserWithEmailAndPassword(this.username, this.password) //v-modelで入力された値でユーザ作成
         .then(user => {
-          alert("Create account: ", user.email);
+          //alert("Create account: ", user.email);
         })
         .catch(error => {
-          alert(error.message);
+          //alert(error.message);
         });
     }
   }

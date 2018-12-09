@@ -3,7 +3,7 @@
     <h2>Sign in</h2>
     <input type="text" placeholder="Username" v-model="username">
     <input type="password" placeholder="Password" v-model="password">
-    <button>Signin</button>
+    <button @click="signIn">Signin</button>
     <p>You don't have an account?
       <router-link to="/signup">create account now!!</router-link>
     </p>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   name: "Signin",
   data() {
@@ -19,7 +21,22 @@ export default {
       password: ""
     };
   },
-  methods: {}
+  methods: {
+    signIn: function() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.username, this.password) //v-modelで受け取ったプロパティ使って認証
+        .then(
+          user => {
+            //alert("Success!");
+            this.$router.push("/dashboard"); // '/dashboard'へリダイレクト
+          },
+          err => {
+            alert(err.message);
+          }
+        );
+    }
+  }
 };
 </script>
 
