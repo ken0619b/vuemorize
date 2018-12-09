@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Dashboard from '@/components/Dashboard'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
@@ -10,10 +9,10 @@ Vue.use(Router)
 
 let router =  new Router({
   routes: [
-    {
-      path: '*',
-      redirect: 'signin'
-    },
+    // {
+    //   path: '*',
+    //   redirect: 'signin'
+    // },
     {
       path: '/dashboard',
       name: 'Dashboard',
