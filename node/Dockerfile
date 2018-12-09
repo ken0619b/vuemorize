@@ -1,4 +1,4 @@
-FROM node:9.11.1-alpine
+FROM node:latest
 
 # 静的コンテンツを配信するシンプルな http サーバをインストールする
 RUN npm install -g http-server
