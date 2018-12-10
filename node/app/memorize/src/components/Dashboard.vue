@@ -20,6 +20,7 @@ export default {
   created() {
     // 初期化処理
     // TODO async fetchが動かなかった原因
+    // https://qiita.com/kurosame/items/6ab7622fe30c299a693e
     this.fetchData();
   },
   data() {
