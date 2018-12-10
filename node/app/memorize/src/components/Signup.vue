@@ -1,6 +1,7 @@
 <template>
   <div class="signup">
     <h2>Sign up</h2>
+    <h1>{{ errorMessage }}</h1>
     <input type="text" placeholder="Username" v-model="username">
     <input type="password" placeholder="Password" v-model="password">
     <button @click="signUp">Register</button>
@@ -19,11 +20,13 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      errorMessage: ""
     };
   },
   methods: {
     signUp: function() {
+      let self = this;
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.username, this.password)
@@ -48,9 +51,7 @@ export default {
 
       //既存のユーザ情報が格納される、もしくは初期化
       usersRef.once("value").then(function(snapshot) {
-        //console.log(`1 snapshot:${snapshot}`);
-        //console.log(`2 typeof: ${typeof snapshot.val()}`);
-        console.log(`3 ${snapshot.child("users").val()}`);
+        // console.log(`3 ${snapshot.child("users").val()}`);
         let currentUserData = snapshot.child("users").val();
 
         if (currentUserData instanceof Array) {
@@ -69,19 +70,25 @@ export default {
             );
 
             //console.log(correctUserData);
-            //processIsCorrect = undefined;
+            processIsCorrect = false;
 
-            // Cardsの初期化(既存のユーザで)
-            store.dispatch("setCards", correctUserData[0].cards);
+            // TODO
+            // 以下の情報は、Dashboardで初期設定する
 
-            // emailの初期化（既存のユーザで）
-            store.dispatch("setEmail", correctUserData[0].email);
+            // エラーメッセージをセット
+            self.errorMessage = "既に使用されているメールアドレスです。";
           } else {
             // 新規登録処理
             currentUserData.push(newUserData); //add new user to current data
             usersRef.update({
               users: currentUserData
             });
+
+            // emailの初期化
+            store.dispatch("setEmail", newUserData.email);
+
+            // 初期化が終わったのでリダイレクト
+            self.$router.push("/dashboard"); // '/dashboard'へリダイレクト
           }
         } else {
           // 初期化が必要な場合
@@ -91,19 +98,19 @@ export default {
             users: [newUserData]
           });
 
+          // TODO
+          // 以下の情報は、Dashboardで初期設定する
+
           // Cardsの初期化
-          store.dispatch("setCards", []);
+          // store.dispatch("setCards", []);
 
           // emailの初期化
           store.dispatch("setEmail", newUserData.email);
+
+          // 初期化が終わったのでリダイレクト
+          self.$router.push("/dashboard"); // '/dashboard'へリダイレクト
         }
       });
-
-      // emailがtakenの場合でも遷移してしまう。
-      if (processIsCorrect == true) {
-        // 初期化が終わったのでリダイレクト
-        this.$router.push("/dashboard"); // '/dashboard'へリダイレクト
-      }
     }
   }
 };

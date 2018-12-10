@@ -52,6 +52,9 @@ export default {
         .then(() => {
           this.$router.push("/signin");
         });
+
+      // emailの初期化
+      store.dispatch("setEmail", "");
     },
     createCard: function() {
       console.log("createCard");
