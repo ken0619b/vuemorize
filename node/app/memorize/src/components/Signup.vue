@@ -12,6 +12,7 @@
 
 <script>
 import firebase from "firebase";
+import store from "@/store/index.js";
 
 export default {
   name: "Signup",
@@ -32,6 +33,9 @@ export default {
         .catch(error => {
           //alert(error.message);
         });
+
+      // Stateへメールアドレスを登録する
+      store.dispatch("setEmail", this.username);
     }
   }
 };

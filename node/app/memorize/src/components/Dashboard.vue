@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>Dashboard</div>
-    <h1>Hello {{ name }}!!</h1>
+    <h1>Hello {{ email }}!!</h1>
     <button @click="signOut">Sign out</button>
     <div>
       <p>ここに登録しているカードを表示</p>
@@ -17,12 +17,33 @@ import store from "@/store/index.js";
 
 export default {
   name: "Dashboard",
+  created() {
+    // 初期化処理
+    // TODO async fetchが動かなかった原因
+    this.fetchData();
+  },
   data() {
     return {
-      name: firebase.auth().currentUser.email
+      email: ""
+      // email: firebase.auth().currentUser.email
     };
   },
   methods: {
+    fetchData: function() {
+      // 初期化処理
+      console.log("**** fetch ****");
+      // 現在のEmailを取得、空の場合はログインを促す
+      const currentEmail = store.getters.getEmail;
+      console.log(`****** currentEmail：${currentEmail} ******`);
+      if (currentEmail) {
+        // 値がセットされているので対象のデータを抽出
+      } else {
+        // Emailが無いのでリダイレクト
+        this.$router.push("/signin"); // '/signin'へリダイレクト
+      }
+      // 取得したemailをセット
+      this.email = store.getters.getEmail;
+    },
     signOut: function() {
       firebase
         .auth()
