@@ -7,7 +7,7 @@ Vue.use(Vuex)
 // ストアを作成
 const store = new Vuex.Store({
   state: {
-    count: 0,
+    //count: 0,
     email: '',
     users: [],
     cards: [
@@ -45,9 +45,6 @@ const store = new Vuex.Store({
 
   mutations: {
     // カウントアップするミューテーションを登録
-    increment(state) {
-      state.count++
-    },
     setEmail(state, newEmail) {
       state.email = newEmail
     },
@@ -60,9 +57,6 @@ const store = new Vuex.Store({
   },
 
   actions: {
-    increment (context) {
-      context.commit('increment')
-    },
     setEmail (context, newEmail) {
       context.commit('setEmail', newEmail)
     },
@@ -72,7 +66,7 @@ const store = new Vuex.Store({
     setUsers (context, newUsers) {
       context.commit('setUsers', newUsers)
     },
-    getUsers (context) {
+    getUsers (context, email) {
       // Firebaseからユーザ情報を取得
       const usersRef = firebase.database().ref("data");
       usersRef.once("value").then(function(snapshot) {
@@ -80,6 +74,21 @@ const store = new Vuex.Store({
 
         // usersを更新
         context.commit('setUsers', currentUserData)
+      })
+    },
+    fetchCards (context) {
+      // Firebaseからユーザ情報を取得
+      const usersRef = firebase.database().ref("data");
+      usersRef.once("value").then(function(snapshot) {
+        const currentUserData = snapshot.child("users").val();
+
+        // メールアドレスが等しいユーザのカード情報を取得する
+        // カードを取り出すロジックを実装
+        const currentCards = []
+
+
+        // cardsを更新
+        context.commit('setCards', currentCards)
       })
     },
     createData (context, newUserData) {

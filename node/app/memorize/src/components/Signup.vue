@@ -47,7 +47,6 @@ export default {
       };
       const usersRef = firebase.database().ref("data");
       const currentUsername = this.username;
-      let processIsCorrect = true;
 
       //既存のユーザ情報が格納される、もしくは初期化
       usersRef.once("value").then(function(snapshot) {
@@ -68,12 +67,6 @@ export default {
             const correctUserData = currentUserData.filter(
               user => user.email === currentUsername
             );
-
-            //console.log(correctUserData);
-            processIsCorrect = false;
-
-            // TODO
-            // 以下の情報は、Dashboardで初期設定する
 
             // エラーメッセージをセット
             self.errorMessage = "既に使用されているメールアドレスです。";

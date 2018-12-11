@@ -44,6 +44,9 @@ export default {
       }
       // 取得したemailをセット
       this.email = store.getters.getEmail;
+
+      // 対象ユーザのカードを取得
+      store.dispatch("fetchCards");
     },
     signOut: function() {
       firebase
