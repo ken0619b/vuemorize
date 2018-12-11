@@ -12,6 +12,7 @@
 
 <script>
 import firebase from "firebase";
+import store from "@/store/index.js";
 
 export default {
   name: "Signin",
@@ -35,6 +36,9 @@ export default {
             alert(err.message);
           }
         );
+
+      // Stateへメールアドレスを登録する
+      store.dispatch("setEmail", this.username);
     }
   }
 };
