@@ -7,16 +7,15 @@ Vue.use(Vuex)
 // ストアを作成
 const store = new Vuex.Store({
   state: {
-    //count: 0,
     email: '',
     users: [],
     cards: [
       {
-        modai: '11111',
+        mondai: '11111',
         kotae: 'aaaa'
       },
       {
-        modai: '22222',
+        mondai: '22222',
         kotae: 'bbbb'
       },
       
@@ -77,22 +76,82 @@ const store = new Vuex.Store({
       })
     },
     fetchCards (context) {
+      console.log('fetchCards')
       // Firebaseからユーザ情報を取得
       const usersRef = firebase.database().ref("data");
       usersRef.once("value").then(function(snapshot) {
         const currentUserData = snapshot.child("users").val();
 
-        // メールアドレスが等しいユーザのカード情報を取得する
-        // カードを取り出すロジックを実装
-        const currentCards = []
+        // 対象のユーザ情報を取得
+        const userInfo = currentUserData.filter(
+          user => user.email == store.getters.getEmail
+        );
 
+        console.log(`userInfo[0].email:${userInfo[0].email}`)
+
+        let currentCards;
+        if(userInfo[0].cards instanceof Array){
+          currentCards = userInfo[0].cards
+        } else {
+          currentCards = []
+        }
 
         // cardsを更新
         context.commit('setCards', currentCards)
       })
     },
-    createData (context, newUserData) {
-      // Signupから移植予定
+    createCard (context, newCard) {
+      console.log('createCard has been called')
+      // firebaseからユーザ情報を取得
+      const usersRef = firebase.database().ref("data");
+
+      // カード情報
+      let currentCards;
+
+      usersRef.once("value").then(function(snapshot) {
+        const currentUserData = snapshot.child("users").val();
+
+        // state.emailと等しい（ログインしている）ユーザのカードを取得
+        const userInfo = currentUserData.filter(
+          user => user.email == store.getters.getEmail
+        );
+
+        // state.emailと等しいユーザ情報のindexを取得
+        const userIndex = currentUserData.findIndex(
+          user => user.email == store.getters.getEmail
+        );
+
+        if(userInfo[0].cards === undefined){
+          currentCards = [newCard]
+          // 新規作成
+          firebase.database()
+            .ref(`data/users/${userIndex}`)
+            .set({
+              email: store.getters.getEmail,
+              cards: currentCards
+            });
+          // cardsを更新
+          context.commit('setCards', currentCards)
+
+        } else {
+          // 現在のカードを追加
+          currentCards = userInfo[0].cards
+
+          //カードデータを追加
+          currentCards.push(newCard)
+
+          // dbを更新
+          firebase.database()
+            .ref(`data/users/${userIndex}`)
+            .set({
+              email: store.getters.getEmail,
+              cards: currentCards
+            });
+
+          // cardsを更新
+          context.commit('setCards', currentCards)
+        }
+      })
     }
   }
 })

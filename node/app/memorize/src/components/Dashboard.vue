@@ -4,16 +4,23 @@
     <h1>Hello {{ email }}!!</h1>
     <button @click="signOut">Sign out</button>
     <div>
-      <p>ここに登録しているカードを表示</p>
-      <button @click="createCard">ボタン</button>
+      <p>カード追加ボタンを表示</p>
+      <button @click="createCard">カードを追加</button>
     </div>
-    <div>カード追加ボタンを表示</div>
+    <div>
+      <p>登録しているカードを表示</p>
+      <div
+        v-for="(card, index) in cards"
+        :key="`${card.mondai}-${index}`"
+      >{{card.mondai}} - {{card.kotae}}</div>
+    </div>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
 import store from "@/store/index.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Dashboard",
@@ -23,11 +30,13 @@ export default {
     // https://qiita.com/kurosame/items/6ab7622fe30c299a693e
     this.fetchData();
   },
-  data() {
-    return {
-      email: ""
-      // email: firebase.auth().currentUser.email
-    };
+  computed: {
+    cards() {
+      return store.getters.getCards;
+    },
+    email() {
+      return store.getters.getEmail;
+    }
   },
   methods: {
     fetchData: function() {
@@ -37,16 +46,12 @@ export default {
       const currentEmail = store.getters.getEmail;
       console.log(`****** currentEmail：${currentEmail} ******`);
       if (currentEmail) {
-        // 値がセットされているので対象のデータを抽出
+        // 対象ユーザのカードを取得
+        store.dispatch("fetchCards");
       } else {
         // Emailが無いのでリダイレクト
         this.$router.push("/signin"); // '/signin'へリダイレクト
       }
-      // 取得したemailをセット
-      this.email = store.getters.getEmail;
-
-      // 対象ユーザのカードを取得
-      store.dispatch("fetchCards");
     },
     signOut: function() {
       firebase
@@ -60,9 +65,15 @@ export default {
       store.dispatch("setEmail", "");
     },
     createCard: function() {
-      console.log("createCard");
-      console.log(store.state.count); // -> 0
-      store.commit("increment"); //mutation commitで呼び出す
+      const newCard = {
+        mondai: "mondai",
+        kotae: "kotae"
+      };
+
+      store.dispatch("createCard", newCard);
+
+      // 対象ユーザのカードを取得
+      store.dispatch("fetchCards");
     }
   }
 };
