@@ -1,6 +1,7 @@
 <template>
   <div class="signin">
     <h2>Sign in</h2>
+    <h1>{{ errorMessage }}</h1>
     <input type="text" placeholder="Username" v-model="username">
     <input type="password" placeholder="Password" v-model="password">
     <button @click="signIn">Signin</button>
@@ -19,26 +20,27 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      errorMessage: ""
     };
   },
   methods: {
     signIn: function() {
+      let self = this;
       firebase
         .auth()
         .signInWithEmailAndPassword(this.username, this.password) //v-modelで受け取ったプロパティ使って認証
         .then(
           user => {
-            //alert("Success!");
+            // Stateへメールアドレスを登録する
+            store.dispatch("setEmail", this.username);
+
             this.$router.push("/dashboard"); // '/dashboard'へリダイレクト
           },
           err => {
-            alert(err.message);
+            self.errorMessage = err.message;
           }
         );
-
-      // Stateへメールアドレスを登録する
-      store.dispatch("setEmail", this.username);
     }
   }
 };
