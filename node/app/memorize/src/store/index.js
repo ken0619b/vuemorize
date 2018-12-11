@@ -48,7 +48,6 @@ const store = new Vuex.Store({
       state.email = newEmail
     },
     setCards(state, newCards) {
-      console.log('setCards has been called')
       state.cards = newCards
     },
     setUsers(state, newUsers) {
@@ -111,8 +110,6 @@ const store = new Vuex.Store({
 
       usersRef.once("value").then(function(snapshot) {
         const currentUserData = snapshot.child("users").val();
-        //console.log(currentUserData)
-        //console.log(store.getters.getEmail)
 
         // state.emailと等しい（ログインしている）ユーザのカードを取得
         const userInfo = currentUserData.filter(
@@ -124,8 +121,6 @@ const store = new Vuex.Store({
           user => user.email == store.getters.getEmail
         );
 
-        //console.log(`userInfo: ${userInfo[0].email}`)
-
         if(userInfo[0].cards === undefined){
           currentCards = [newCard]
           // 新規作成
@@ -135,6 +130,9 @@ const store = new Vuex.Store({
               email: store.getters.getEmail,
               cards: currentCards
             });
+          // cardsを更新
+          context.commit('setCards', currentCards)
+
         } else {
           // 現在のカードを追加
           currentCards = userInfo[0].cards
@@ -149,11 +147,11 @@ const store = new Vuex.Store({
               email: store.getters.getEmail,
               cards: currentCards
             });
+
+          // cardsを更新
+          context.commit('setCards', currentCards)
         }
       })
-
-    // cardsを更新
-    context.commit('setCards', currentCards)
     }
   }
 })

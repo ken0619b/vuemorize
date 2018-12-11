@@ -20,6 +20,7 @@
 <script>
 import firebase from "firebase";
 import store from "@/store/index.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Dashboard",
@@ -29,11 +30,13 @@ export default {
     // https://qiita.com/kurosame/items/6ab7622fe30c299a693e
     this.fetchData();
   },
-  data() {
-    return {
-      email: "",
-      cards: []
-    };
+  computed: {
+    cards() {
+      return store.getters.getCards;
+    },
+    email() {
+      return store.getters.getEmail;
+    }
   },
   methods: {
     fetchData: function() {
@@ -43,18 +46,12 @@ export default {
       const currentEmail = store.getters.getEmail;
       console.log(`****** currentEmail：${currentEmail} ******`);
       if (currentEmail) {
-        // 値がセットされているので対象のデータを抽出
-        this.email = store.getters.getEmail;
-
         // 対象ユーザのカードを取得
         store.dispatch("fetchCards");
       } else {
         // Emailが無いのでリダイレクト
         this.$router.push("/signin"); // '/signin'へリダイレクト
       }
-
-      // TODO 呼び出し時に機能しない
-      this.cards = store.getters.getCards;
     },
     signOut: function() {
       firebase
