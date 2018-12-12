@@ -84,6 +84,9 @@ export default {
 
         // 対象ユーザのカードを取得
         store.dispatch("fetchCards");
+
+        this.mondai = "";
+        this.kotae = "";
       }
     }
   }
