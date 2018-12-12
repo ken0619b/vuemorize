@@ -4,7 +4,9 @@
     <h1>Hello {{ email }}!!</h1>
     <button @click="signOut">Sign out</button>
     <div>
-      <p>カード追加ボタンを表示</p>
+      <p>カード追加</p>
+      <input type="text" placeholder="mondai" v-model="mondai">
+      <input type="text" placeholder="kotae" v-model="kotae">
       <button @click="createCard">カードを追加</button>
     </div>
     <div>
@@ -24,6 +26,12 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Dashboard",
+  data() {
+    return {
+      mondai: "",
+      kotae: ""
+    };
+  },
   created() {
     // 初期化処理
     // TODO async fetchが動かなかった原因
@@ -65,15 +73,18 @@ export default {
       store.dispatch("setEmail", "");
     },
     createCard: function() {
-      const newCard = {
-        mondai: "mondai",
-        kotae: "kotae"
-      };
+      if (this.mondai != "" && this.kotae != "") {
+        console.log(`${this.mondai} - ${this.kotae}`);
+        const newCard = {
+          mondai: this.mondai,
+          kotae: this.kotae
+        };
 
-      store.dispatch("createCard", newCard);
+        store.dispatch("createCard", newCard);
 
-      // 対象ユーザのカードを取得
-      store.dispatch("fetchCards");
+        // 対象ユーザのカードを取得
+        store.dispatch("fetchCards");
+      }
     }
   }
 };
