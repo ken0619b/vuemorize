@@ -4,8 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import firebase from 'firebase'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 Vue.config.productionTip = false
+
+// Vuetify
+Vue.use(Vuetify)
 
 const config = {
   apiKey: "AIzaSyCj1DihqxjnC5zCq_kr7zhl9Ze8o3z4P7g",
@@ -24,8 +30,4 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
-  data: {
-    email: "",
-    cards: ""
-  }
 })
