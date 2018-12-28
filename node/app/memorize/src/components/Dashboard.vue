@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <!-- nav -->
     <v-navigation-drawer v-model="drawer" v-if="device == 'sp'" fixed right app>
       <v-list dense>
         <v-subheader inset>{{ email }}</v-subheader>
@@ -13,32 +14,39 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="indigo" dark fixed app>
-      <v-spacer></v-spacer>
-      <v-toolbar-title>Vuemorize</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-side-icon v-if="device == 'sp'" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat>{{ email }}</v-btn>
-        <v-btn flat @click="signOut">Sign Out</v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-    <div>
-      <div
-        v-for="(card, index) in cards"
-        :key="`${card.mondai}-${index}`"
-      >{{card.mondai}} - {{card.kotae}}</div>
+
+    <!-- content -->
+    <v-content>
+      <!-- header -->
+      <v-toolbar color="indigo" dark fixed app>
+        <v-spacer></v-spacer>
+        <v-toolbar-title>Vuemorize</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-side-icon v-if="device == 'sp'" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-items class="hidden-sm-and-down">
+          <v-btn flat>{{ email }}</v-btn>
+          <v-btn flat @click="signOut">Sign Out</v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+
+      <!-- main -->
       <div>
         <div v-if="device == 'sp'">
           <p>CardDeckコンポーネントから</p>
           <CardDeck v-bind:cardData="cards"/>
+          <p>CardDeckコンポーネントから ここまで</p>
         </div>
         <div v-if="device == 'pc'">
-          <p>CardAppendコンポーネントから</p>
-          <CardAppend/>
+          <CardAppend v-bind:cardData="cards"/>
         </div>
       </div>
-    </div>
+    </v-content>
+
+    <!-- footer -->
+    <v-footer class="pa-3">
+      <v-spacer></v-spacer>
+      <div>&copy; @kenkenken {{ new Date().getFullYear() }}</div>
+    </v-footer>
   </v-app>
 </template>
 

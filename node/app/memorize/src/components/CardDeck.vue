@@ -1,4 +1,5 @@
 <template>
+  <!-- CardView -->
   <div>{{ cardData }}</div>
 </template>
 
