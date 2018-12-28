@@ -9,10 +9,11 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "now-build":"npm run dev"
+    "now-build": "npm run dev"
   },
   "dependencies": {
     "firebase": "^5.7.0",
+    "ismobilejs": "^0.5.1",
     "nanoid": "^2.0.0",
     "now": "^12.1.11",
     "vue": "^2.5.2",
