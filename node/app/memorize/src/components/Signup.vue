@@ -1,14 +1,51 @@
 <template>
-  <div class="signup">
-    <h2>Sign up</h2>
-    <h1>{{ errorMessage }}</h1>
-    <input type="text" placeholder="Username" v-model="username">
-    <input type="password" placeholder="Password" v-model="password">
-    <button @click="signUp">Register</button>
-    <p>Do you have an account?
-      <router-link to="/signin">sign in now!!</router-link>
-    </p>
-  </div>
+  <v-app id="inspire">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>SignUp Form</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    prepend-icon="person"
+                    name="login"
+                    label="Email"
+                    type="text"
+                    v-model="username"
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="lock"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    v-model="password"
+                  ></v-text-field>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click="signUp">Sign Up</v-btn>
+                  </v-card-actions>
+                </v-form>
+                <p>Do you have an account?
+                  <router-link to="/signin">sign in now!!</router-link>
+                </p>
+                <v-alert
+                  v-if="errorMessage != ''"
+                  :value="true"
+                  color="error"
+                  icon="warning"
+                  outline
+                >{{ errorMessage }}</v-alert>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -111,31 +148,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1,
-h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.signup {
-  margin-top: 20px;
-
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-}
-input {
-  margin: 10px 0;
-  padding: 10px;
-}
 </style>

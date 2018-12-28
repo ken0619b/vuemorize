@@ -1,24 +1,45 @@
 <template>
-  <div>
-    <div>Dashboard</div>
-    <h1>Hello {{ email }}!!</h1>
-    <button @click="signOut">Sign out</button>
-    <p>登録しているカードを表示</p>
-    <div
-      v-for="(card, index) in cards"
-      :key="`${card.mondai}-${index}`"
-    >{{card.mondai}} - {{card.kotae}}</div>
+  <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer" v-if="device == 'sp'" fixed right app>
+      <v-list dense>
+        <v-subheader inset>{{ email }}</v-subheader>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>toggle_off</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title @click="signOut">SignOut</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar color="indigo" dark fixed app>
+      <v-spacer></v-spacer>
+      <v-toolbar-title>Vuemorize</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-side-icon v-if="device == 'sp'" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat>{{ email }}</v-btn>
+        <v-btn flat @click="signOut">Sign Out</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
     <div>
-      <div v-if="device == 'sp'">
-        <p>CardDeckコンポーネントから</p>
-        <CardDeck v-bind:cardData="cards"/>
-      </div>
-      <div v-if="device == 'pc'">
-        <p>CardAppendコンポーネントから</p>
-        <CardAppend/>
+      <div
+        v-for="(card, index) in cards"
+        :key="`${card.mondai}-${index}`"
+      >{{card.mondai}} - {{card.kotae}}</div>
+      <div>
+        <div v-if="device == 'sp'">
+          <p>CardDeckコンポーネントから</p>
+          <CardDeck v-bind:cardData="cards"/>
+        </div>
+        <div v-if="device == 'pc'">
+          <p>CardAppendコンポーネントから</p>
+          <CardAppend/>
+        </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -38,7 +59,17 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      device: ""
+      device: "",
+      drawer: null,
+      headers: [
+        {
+          text: "Words",
+          align: "left",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Translations", value: "translations" }
+      ]
     };
   },
   created() {
