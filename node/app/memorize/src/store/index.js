@@ -9,17 +9,7 @@ const store = new Vuex.Store({
   state: {
     email: '',
     users: [],
-    cards: [
-      {
-        mondai: '11111',
-        kotae: 'aaaa'
-      },
-      {
-        mondai: '22222',
-        kotae: 'bbbb'
-      },
-      
-    ]
+    cards: []
   },
 
   getters: {
