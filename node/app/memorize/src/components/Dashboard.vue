@@ -32,9 +32,7 @@
       <!-- main -->
       <div>
         <div v-if="device == 'sp'">
-          <p>CardDeckコンポーネントから</p>
           <CardDeck v-bind:cardData="cards"/>
-          <p>CardDeckコンポーネントから ここまで</p>
         </div>
         <div v-if="device == 'pc'">
           <CardAppend v-bind:cardData="cards"/>
@@ -103,11 +101,8 @@ export default {
   },
   methods: {
     fetchData: function() {
-      // 初期化処理
-      console.log("**** fetch ****");
       // 現在のEmailを取得、空の場合はログインを促す
       const currentEmail = store.getters.getEmail;
-      console.log(`****** currentEmail：${currentEmail} ******`);
       if (currentEmail) {
         // 対象ユーザのカードを取得
         store.dispatch("fetchCards");
