@@ -16,7 +16,7 @@
     "ismobilejs": "^0.5.1",
     "material-design-icons-iconfont": "^4.0.3",
     "nanoid": "^2.0.0",
-    "now": "^12.1.11",
+    "now": "^12.1.14",
     "schema-utils": "^1.0.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
