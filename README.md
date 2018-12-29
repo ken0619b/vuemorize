@@ -10,5 +10,5 @@ You can access via your smartphones, and computers.
 ## tech
 Docker
 vue.js
-Native-script-vue
+Vuetify
 
